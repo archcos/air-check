@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Replace '1234' with your actual PIN
     if ($enteredPIN === '1234') {
         // Redirect to another PHP page
-        header("Location: locations.php");
+        header("Location: locations.html");
         exit(); // Ensure no further code execution
     } else {
         $errorMessage = 'Incorrect PIN. Try again.';

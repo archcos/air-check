@@ -1,9 +1,10 @@
 <?php
 
-$servername = "localhost";
-$dbname = "id21995682_checkairdb";
-$username = "id21995682_checkairdb";
-$password = "Charcos123!";
+$servername = "aws-0-ap-southeast-1.pooler.supabase.com";
+$dbname = "postgres";
+$username = "postgres.phlhxvertmsqskgofbug";
+$password = "Aircheckqms1234!";
+$port = 6543;
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Create connection
@@ -58,10 +59,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     <div class="container">
         <div class="title-container">
             <h1>Particulate Matter Data</h1>
-            <form action="export.php" method="post">
+            <form action="export.html" method="post">
                 <input type="submit" value="Export to Excel">
             </form>
-            <form action="set-location.php" method="get">
+            <form action="set-location.html" method="get">
                 <input type="submit" value="Update Locations">
             </form>
         </div>
