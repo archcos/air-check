@@ -1,14 +1,13 @@
 <?php
-
 $servername = "aws-0-ap-southeast-1.pooler.supabase.com";
 $dbname = "postgres";
 $username = "postgres.phlhxvertmsqskgofbug";
 $password = "Aircheckqms1234!";
-$port = 6543;
+$port = 6543; // Ensure this is the correct port for your Supabase PostgreSQL instance
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli($servername, $username, $password, $dbname, $port);
     // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -45,8 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     $conn->close();
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,18 +76,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 <th>PM10</th>
                 <th>PM10 Remarks</th>
             </tr>
-            <?php foreach ($data as $row): ?>
-            <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo $row['timestamp']; ?></td>
-                <td><?php echo $row['device_id']; ?></td>
-                <td><?php echo $row['location']; ?></td> <!-- Display location -->
-                <td><?php echo $row['pm25']; ?></td>
-                <td><?php echo $row['pm25remarks']; ?></td>
-                <td><?php echo $row['pm10']; ?></td>
-                <td><?php echo $row['pm10remarks']; ?></td>
-            </tr>
-            <?php endforeach; ?>
+            <?php if (!empty($data) && !isset($data[0]['message'])): ?>
+                <?php foreach ($data as $row): ?>
+                <tr>
+                    <td><?php echo $row['id']; ?></td>
+                    <td><?php echo $row['timestamp']; ?></td>
+                    <td><?php echo $row['device_id']; ?></td>
+                    <td><?php echo $row['location']; ?></td> <!-- Display location -->
+                    <td><?php echo $row['pm25']; ?></td>
+                    <td><?php echo $row['pm25remarks']; ?></td>
+                    <td><?php echo $row['pm10']; ?></td>
+                    <td><?php echo $row['pm10remarks']; ?></td>
+                </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="8"><?php echo $data[0]['message']; ?></td>
+                </tr>
+            <?php endif; ?>
         </table>
         <br>
     </div>
