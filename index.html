@@ -1,51 +1,60 @@
 <?php
-
-$servername = "localhost";
-$dbname = "id21995682_checkairdb";
-$username = "id21995682_checkairdb";
-$password = "Charcos123!";
+$apiUrl = "https://phlhxvertmsqskgofbug.supabase.co/rest/v1/tblparticulate_matter";
+$apiKey = "YOUR_SUPABASE_API_KEY";
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "apikey: $apiKey",
+        "Authorization: Bearer $apiKey",
+        "Content-Type: application/json",
+        "Accept: application/json"
+    ]);
+
+    // Execute cURL request
+    $response = curl_exec($ch);
+
+    // Check for errors
+    if (curl_errno($ch)) {
+        echo "cURL error: " . curl_error($ch);
+        curl_close($ch);
+        exit;
     }
 
-    // SQL query to fetch data and sort by particulate_matter_id
-    $sql = "SELECT particulate_matter_id, timestamp, device_id, location, pm25, pm10, pm25remarks, pm10remarks 
-            FROM tblparticulate_matter
-            ORDER BY particulate_matter_id ASC";
-    $result = $conn->query($sql);
+    // Close cURL session
+    curl_close($ch);
 
-    $data = array(); // Initialize an array to store the data
-    $counter = 1;    // Initialize the counter
+    $result = json_decode($response, true);
 
-    if ($result->num_rows > 0) {
-        // Output data of each row
-        while ($row = $result->fetch_assoc()) {
+    $data = array();
+    $counter = 1;  
+
+    if (!empty($result)) {
+        foreach ($result as $row) {
             // Add each row to the data array
             $data[] = array(
-                'id' => $counter,                    // Use the counter as the ID
+                'id' => $counter,                   
                 'timestamp' => $row["timestamp"],
                 'device_id' => $row["device_id"],
-                'location' => $row["location"],      // Include location in the data array
+                'location' => $row["location"],      
                 'pm25' => $row["pm25"],
                 'pm10' => $row["pm10"],
                 'pm25remarks' => $row["pm25remarks"],
                 'pm10remarks' => $row["pm10remarks"]
             );
-            $counter++; // Increment the counter
+            $counter++; 
         }
     } else {
         $data[] = array('message' => 'No results');
     }
-
-    $conn->close();
 }
-
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             <form action="export.php" method="post">
                 <input type="submit" value="Export to Excel">
             </form>
-            <form action="set-location.php" method="get">
+            <form action="set-location.html" method="get">
                 <input type="submit" value="Update Locations">
             </form>
         </div>
@@ -76,18 +85,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 <th>PM10</th>
                 <th>PM10 Remarks</th>
             </tr>
-            <?php foreach ($data as $row): ?>
-            <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo $row['timestamp']; ?></td>
-                <td><?php echo $row['device_id']; ?></td>
-                <td><?php echo $row['location']; ?></td> <!-- Display location -->
-                <td><?php echo $row['pm25']; ?></td>
-                <td><?php echo $row['pm25remarks']; ?></td>
-                <td><?php echo $row['pm10']; ?></td>
-                <td><?php echo $row['pm10remarks']; ?></td>
-            </tr>
-            <?php endforeach; ?>
+            <?php if (!empty($data) && !isset($data[0]['message'])): ?>
+                <?php foreach ($data as $row): ?>
+                <tr>
+                    <td><?php echo $row['id']; ?></td>
+                    <td><?php echo $row['timestamp']; ?></td>
+                    <td><?php echo $row['device_id']; ?></td>
+                    <td><?php echo $row['location']; ?></td> <!-- Display location -->
+                    <td><?php echo $row['pm25']; ?></td>
+                    <td><?php echo $row['pm25remarks']; ?></td>
+                    <td><?php echo $row['pm10']; ?></td>
+                    <td><?php echo $row['pm10remarks']; ?></td>
+                </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="8"><?php echo $data[0]['message']; ?></td>
+                </tr>
+            <?php endif; ?>
         </table>
         <br>
     </div>
