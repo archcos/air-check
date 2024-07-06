@@ -1,11 +1,12 @@
 <?php
 $apiUrl = "https://phlhxvertmsqskgofbug.supabase.co/rest/v1/tblparticulate_matter";
-$apiKey = "YOUR_SUPABASE_API_KEY";
+$apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBobGh4dmVydG1zcXNrZ29mYnVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk5OTgyMjMsImV4cCI6MjAzNTU3NDIyM30.K-byE_UrblXBVqxyqvwSN_LVlOuyBi2b3XruZaAV6P8"; // Replace with your actual API key
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-
+    // Initialize cURL session
     $ch = curl_init();
 
+    // Set cURL options
     curl_setopt($ch, CURLOPT_URL, $apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -28,32 +29,33 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Close cURL session
     curl_close($ch);
 
+    // Decode JSON response
     $result = json_decode($response, true);
 
-    $data = array();
-    $counter = 1;  
+    $data = array(); // Initialize an array to store the data
+    $counter = 1;    // Initialize the counter
 
     if (!empty($result)) {
+        // Output data of each row
         foreach ($result as $row) {
             // Add each row to the data array
             $data[] = array(
-                'id' => $counter,                   
+                'id' => $counter,                    // Use the counter as the ID
                 'timestamp' => $row["timestamp"],
                 'device_id' => $row["device_id"],
-                'location' => $row["location"],      
+                'location' => $row["location"],      // Include location in the data array
                 'pm25' => $row["pm25"],
                 'pm10' => $row["pm10"],
                 'pm25remarks' => $row["pm25remarks"],
                 'pm10remarks' => $row["pm10remarks"]
             );
-            $counter++; 
+            $counter++; // Increment the counter
         }
     } else {
         $data[] = array('message' => 'No results');
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
