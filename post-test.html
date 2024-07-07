@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Form</title>
+</head>
+<body>
+    <h2>Submit Data</h2>
+    <form id="dataForm">
+        <input type="text" name="api_key" required><br>
+        
+        <label for="device_id">Device ID:</label>
+        <input type="text" name="device_id" required><br>
+
+        <label for="pm25">PM2.5:</label>
+        <input type="text" name="pm25" required><br>
+
+        <label for="pm10">PM10:</label>
+        <input type="text" name="pm10" required><br>
+
+        <label for="pm25remarks">PM2.5 Remarks:</label>
+        <input type="text" name="pm25remarks" required><br>
+
+        <label for="pm10remarks">PM10 Remarks:</label>
+        <input type="text" name="pm10remarks" required><br>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+        // Initialize Supabase client
+        const SUPABASE_URL = 'https://phlhxvertmsqskgofbug.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBobGh4dmVydG1zcXNrZ29mYnVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk5OTgyMjMsImV4cCI6MjAzNTU3NDIyM30.K-byE_UrblXBVqxyqvwSN_LVlOuyBi2b3XruZaAV6P8';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        document.getElementById('dataForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const deviceID = event.target.device_id.value;
+            const pm25 = event.target.pm25.value;
+            const pm10 = event.target.pm10.value;
+            const pm25remarks = event.target.pm25remarks.value;
+            const pm10remarks = event.target.pm10remarks.value;
+
+
+            // Fetch the location based on device_id
+            const { data: device, error: fetchError } = await supabase
+                .from('tbldevice')
+                .select('location')
+                .eq('device_id', deviceID)
+                .single();
+
+            if (fetchError || !device) {
+                alert('Device ID not found.');
+                return;
+            }
+
+            const location = device.location;
+
+            // Insert data into tblparticulate_matter
+            const { data, error } = await supabase
+                .from('tblparticulate_matter')
+                .insert([{
+                    device_id: deviceID,
+                    location: location,
+                    pm25: pm25,
+                    pm10: pm10,
+                    pm25remarks: pm25remarks,
+                    pm10remarks: pm10remarks,
+                    timestamp: new Date().toISOString()
+                }]);
+
+            if (error) {
+                alert(`Error: ${error.message}`);
+            } else {
+                alert('New record created successfully');
+            }
+        });
+    </script>
+</body>
+</html>
