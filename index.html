@@ -84,11 +84,13 @@
         }
 
         function exportToExcel(data) {
-            const worksheet = XLSX.utils.json_to_sheet(data, {
-                header: ["timestamp", "device_id", "location", "pm25", "pm10", "pm25remarks", "pm10remarks"]
+            const worksheet = XLSX.utils.json_to_sheet(data.map(item => ({
+            ...item,
+            timestamp: new Date(item.timestamp).toLocaleString()
+            })), {
+            header: ["particulate_matter_id", "timestamp", "device_id", "location", "pm25", "pm25remarks", "pm10", "pm10remarks"]
             });
 
-            // Add a header row manually
             XLSX.utils.sheet_add_aoa(worksheet, [["ID", "Timestamp", "Device ID", "Location", "PM2.5", "PM2.5 Remarks", "PM10", "PM10 Remarks"]], { origin: "A1" });
 
             const workbook = XLSX.utils.book_new();
