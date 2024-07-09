@@ -57,6 +57,16 @@ button {
     cursor: pointer;
 }
 
+.button-excel {
+    background-color: #fff;
+    color: #4caf50;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
 h1, h2 {
     color: #333;
 }
