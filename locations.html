@@ -19,24 +19,25 @@
         </table>
     </div>
     <div>
-        <form id="update-form" action="location-update.php" method="post">
+        <form id="update-form">
             <h2>Update Device Location</h2>
             <label for="device_id">Select Device ID:</label>
             <select name="device_id" id="device_id" required>
                 <!-- Options will be added here by JavaScript -->
             </select><br>
             <label for="location">Location:</label>
-            <input type="text" name="location" required><br>
+            <input type="text" name="location" id="location" required><br>
             <input type="submit" value="Update Location">
         </form>
     </div>
 
     <script>
+        // Check for access
         if (!localStorage.getItem('accessGranted')) {
             window.location.href = 'set-location.html';
         }
 
-        const SUPABASE_URL = 'https://phlhxvertmsqskgofbug.supabase.co';
+        const SUPABASE_URL = 'https://phlhxvertmsqskgofbug.supabase.co/rest/v1/tbldevice';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBobGh4dmVydG1zcXNrZ29mYnVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk5OTgyMjMsImV4cCI6MjAzNTU3NDIyM30.K-byE_UrblXBVqxyqvwSN_LVlOuyBi2b3XruZaAV6P8';
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -65,6 +66,27 @@
         }
 
         document.addEventListener('DOMContentLoaded', fetchDevices);
+
+        document.getElementById('update-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const deviceId = document.getElementById('device_id').value;
+            const location = document.getElementById('location').value;
+
+            // Set your timezone
+            const currentTime = new Date().toISOString();
+
+            const { error } = await supabase
+                .from('tbldevice')
+                .update({ location: location, location_updated: currentTime })
+                .eq('device_id', deviceId);
+
+            if (error) {
+                console.error('Error updating record:', error);
+            } else {
+                alert('Location updated successfully!');
+                window.location.reload();
+            }
+        });
     </script>
 </body>
 </html>
