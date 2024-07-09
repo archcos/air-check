@@ -49,10 +49,13 @@ form {
 
 button {
     background-color: #fff;
+    color: #4caf50;;
     padding: 20px;
-    border-radius: 8px;
+    border: none;
     text-align: center;
-    margin-top: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 h1, h2 {

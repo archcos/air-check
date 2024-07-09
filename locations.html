@@ -49,7 +49,9 @@
                         'Content-Type': 'application/json'
                     }
                 });
-                const data = await response.json();
+                let data = await response.json();
+
+                data.sort((a, b) => a.device_id - b.device_id);
 
                 const table = document.getElementById('device-table');
                 const select = document.getElementById('device_id');
