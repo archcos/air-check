@@ -77,9 +77,6 @@
             const deviceId = document.getElementById('device_id').value;
             const location = document.getElementById('location').value;
 
-            // Set your timezone
-            const currentTime = new Date().toISOString();
-
             try {
                 const response = await fetch(`${apiUrl}?device_id=eq.${deviceId}`, {
                     method: 'PATCH',
@@ -90,7 +87,6 @@
                     },
                     body: JSON.stringify({
                         location: location,
-                        location_updated: currentTime
                     })
                 });
 
