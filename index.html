@@ -14,7 +14,7 @@
             <form action="set-location.html" method="get">
                 <input type="submit" value="Update Locations">
             </form>
-            <button id="exportButton">
+            <button class="button-excel" id="exportButton">
                 <img src="excel.png" alt="Excel Icon" style="width: 20px; height: 20px; margin-right: 5px;"> Export to Excel
             </button>
         </div>
@@ -79,7 +79,12 @@
                 table.appendChild(tr);
             });
         }
-        
+
+        function formatTimestamp(time_created) {
+            const date = new Date(time_created);
+            return date.toLocaleString(); // Adjust formatting as needed
+        }
+
         function exportToExcel(data) {
             const worksheet = XLSX.utils.json_to_sheet(data.map(item => {
                 const { timestamp, ...rest } = item; // Remove the timestamp field
