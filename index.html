@@ -87,13 +87,13 @@
 
         function exportToExcel(data) {
             const worksheet = XLSX.utils.json_to_sheet(data.map(item => {
-                const { time_created, ...rest } = item; // Remove the timestamp field
+                const { timestamp, ...rest } = item; // Remove the timestamp field
                 return {
                     ...rest,
-                    timestamp: new Date(item.timestamp).toLocaleString()
+                    time_created: new Date(item.time_created).toLocaleString()
                 };
             }), {
-                header: ["particulate_matter_id", "timestamp", "device_id", "location", "pm25", "pm25remarks", "pm10", "pm10remarks"]
+                header: ["particulate_matter_id", "time_created", "device_id", "location", "pm25", "pm25remarks", "pm10", "pm10remarks"]
             });
 
             XLSX.utils.sheet_add_aoa(worksheet, [["ID", "Date Uploaded", "Device ID", "Location", "PM2.5", "PM2.5 Remarks", "PM10", "PM10 Remarks"]], { origin: "A1" });
