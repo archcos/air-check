@@ -51,11 +51,10 @@ button {
     background-color: #4caf50;
     color: #fff;
     padding: 20px;
-    border: none;
+    border-radius: 8px;
     text-align: center;
-    border-radius: 4px;
+    margin-top: 20px;
     cursor: pointer;
-    font-size: 16px;
 }
 
 h1, h2 {

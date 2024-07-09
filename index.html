@@ -11,10 +11,12 @@
     <div class="container">
         <div class="title-container">
             <h1>Particulate Matter Data</h1>
-            <button id="exportButton">Export to Excel</button>
             <form action="set-location.html" method="get">
                 <input type="submit" value="Update Locations">
             </form>
+            <button id="exportButton">
+                <img src="excel.png" alt="Excel Icon" style="width: 20px; height: 20px; margin-right: 5px;"> Export to Excel
+            </button>
         </div>
         <table id="dataTable">
             <tr>
@@ -66,7 +68,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${formatTimestamp(row.timestamp)}</td>
+                    <td>${formatTimestamp(row.time_created)}</td>
                     <td>${row.device_id}</td>
                     <td>${row.location}</td>
                     <td>${row.pm25}</td>
@@ -88,10 +90,10 @@
             ...item,
             timestamp: new Date(item.timestamp).toLocaleString()
             })), {
-            header: ["particulate_matter_id", "timestamp", "device_id", "location", "pm25", "pm25remarks", "pm10", "pm10remarks"]
+            header: ["particulate_matter_id", "time_created", "device_id", "location", "pm25", "pm25remarks", "pm10", "pm10remarks"]
             });
 
-            XLSX.utils.sheet_add_aoa(worksheet, [["ID", "Timestamp", "Device ID", "Location", "PM2.5", "PM2.5 Remarks", "PM10", "PM10 Remarks"]], { origin: "A1" });
+            XLSX.utils.sheet_add_aoa(worksheet, [["ID", "Date Uploaded", "Device ID", "Location", "PM2.5", "PM2.5 Remarks", "PM10", "PM10 Remarks"]], { origin: "A1" });
 
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Particulate Matter Data');
