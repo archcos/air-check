@@ -47,6 +47,14 @@ form {
     margin-top: 20px;
 }
 
+button {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+}
+
 h1, h2 {
     color: #333;
 }

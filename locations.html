@@ -32,7 +32,10 @@
     </div>
 
     <script>
-        // Initialize Supabase client
+        if (!localStorage.getItem('accessGranted')) {
+            window.location.href = 'set-location.html';
+        }
+
         const SUPABASE_URL = 'https://phlhxvertmsqskgofbug.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBobGh4dmVydG1zcXNrZ29mYnVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk5OTgyMjMsImV4cCI6MjAzNTU3NDIyM30.K-byE_UrblXBVqxyqvwSN_LVlOuyBi2b3XruZaAV6P8';
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -47,7 +50,6 @@
                 return;
             }
 
-            // Populate the table with device data
             const table = document.getElementById('device-table');
             const select = document.getElementById('device_id');
             data.forEach(device => {
