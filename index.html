@@ -68,7 +68,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${formatTimestamp(row.time_created)}</td>
+                    <td>${formatTimestamp(row.timestamp)}</td>
                     <td>${row.device_id}</td>
                     <td>${row.location}</td>
                     <td>${row.pm25}</td>
@@ -80,8 +80,8 @@
             });
         }
 
-        function formatTimestamp(time_created) {
-            const date = new Date(time_created);
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
             return date.toLocaleString(); // Adjust formatting as needed
         }
 
@@ -93,7 +93,7 @@
                     time_created: new Date(item.time_created).toLocaleString()
                 };
             }), {
-                header: ["particulate_matter_id", "time_created", "device_id", "location", "pm25", "pm25remarks", "pm10", "pm10remarks"]
+                header: ["particulate_matter_id", "timestamp", "device_id", "location", "pm25", "pm25remarks", "pm10", "pm10remarks"]
             });
 
             XLSX.utils.sheet_add_aoa(worksheet, [["ID", "Date Uploaded", "Device ID", "Location", "PM2.5", "PM2.5 Remarks", "PM10", "PM10 Remarks"]], { origin: "A1" });
