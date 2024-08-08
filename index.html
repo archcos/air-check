@@ -34,7 +34,7 @@
 
     <script>
         const apiUrl = "https://phlhxvertmsqskgofbug.supabase.co/rest/v1/tblparticulate_matter";
-        const apiKey = "your_api_key_here"; // Replace with your actual API key
+        const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBobGh4dmVydG1zcXNrZ29mYnVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk5OTgyMjMsImV4cCI6MjAzNTU3NDIyM30.K-byE_UrblXBVqxyqvwSN_LVlOuyBi2b3XruZaAV6P8"; // Replace with your actual API key
 
         document.addEventListener('DOMContentLoaded', async () => {
             try {
@@ -64,10 +64,10 @@
 
         function populateTable(data) {
             const table = document.getElementById('dataTable');
-
-            // Sort data by timestamp in descending order
+            
+            // Sort the data by timestamp in descending order
             data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
+            
             data.forEach((row, index) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -83,6 +83,7 @@
                 table.appendChild(tr);
             });
         }
+
 
         function formatTimestamp(timestamp) {
             const date = new Date(timestamp);
