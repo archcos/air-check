@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="container">
+        <button onclick="window.location.href='index.html';" class="back-button">Back to Home</button>
         <h1>Device Locations</h1>
         <table id="device-table">
             <tr>
@@ -37,7 +38,7 @@
         }
 
         const apiUrl = "https://phlhxvertmsqskgofbug.supabase.co/rest/v1/tbldevice";
-        const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBobGh4dmVydG1zcXNrZ29mYnVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk5OTgyMjMsImV4cCI6MjAzNTU3NDIyM30.K-byE_UrblXBVqxyqvwSN_LVlOuyBi2b3XruZaAV6P8";
+        const apiKey = "your_api_key_here"; // Replace with your actual API key
 
         async function fetchDevices() {
             try {
